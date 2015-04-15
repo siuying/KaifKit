@@ -1,0 +1,50 @@
+PODS:
+  - AFNetworking (2.5.2):
+    - AFNetworking/NSURLConnection (= 2.5.2)
+    - AFNetworking/NSURLSession (= 2.5.2)
+    - AFNetworking/Reachability (= 2.5.2)
+    - AFNetworking/Security (= 2.5.2)
+    - AFNetworking/Serialization (= 2.5.2)
+    - AFNetworking/UIKit (= 2.5.2)
+  - AFNetworking/NSURLConnection (2.5.2):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.2):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.2)
+  - AFNetworking/Security (2.5.2)
+  - AFNetworking/Serialization (2.5.2)
+  - AFNetworking/UIKit (2.5.2):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - AFOAuth2Manager (2.2.0):
+    - AFNetworking/NSURLConnection (~> 2.2)
+  - Expecta (0.4.0)
+  - KaifKit (0.1.0):
+    - AFNetworking (~> 2.4)
+    - AFOAuth2Manager
+    - SSKeychain
+  - Specta (0.5.0)
+  - SSKeychain (1.2.3)
+
+DEPENDENCIES:
+  - Expecta
+  - KaifKit (from `../`)
+  - Specta
+
+EXTERNAL SOURCES:
+  KaifKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  AFOAuth2Manager: 952eb62e8fd8022971e64c6e8fe28b9e999224af
+  Expecta: 392a6b5bfb9f4097e47dd8064d9b732079490332
+  KaifKit: 7cc4496701baa31db1d8796bb879472f3d3955f5
+  Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
+  SSKeychain: 3f42991739c6c60a9cf1bbd4dff6c0d3694bcf3d
+
+COCOAPODS: 0.36.3

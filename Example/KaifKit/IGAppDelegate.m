@@ -7,6 +7,7 @@
 //
 
 #import "IGAppDelegate.h"
+#import <KaifKit/KaifKit.h>
 
 @implementation IGAppDelegate
 

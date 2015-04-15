@@ -17,22 +17,18 @@ Pod::Spec.new do |s|
                        * Markdown format.
                        * Don't worry about the indent, we strip it!
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/KaifKit"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.homepage         = "https://github.com/siuying/KaifKit"
   s.license          = 'MIT'
   s.author           = { "Francis Chong" => "francis@ignition.hk" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/KaifKit.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => "https://github.com/siuying/KaifKit.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'KaifKit' => ['Pod/Assets/*.png']
-  }
+  s.dependency 'AFNetworking', '~> 2.4'
+  s.dependency 'AFOAuth2Manager'
+  s.dependency 'SSKeychain'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  
 end
