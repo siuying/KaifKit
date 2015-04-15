@@ -1,0 +1,12 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'KaifKit', :exclusive => true do
+  pod "KaifKit", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "KaifKit", :path => "../"
+
+  pod 'Specta'
+  pod 'Expecta'
+end
