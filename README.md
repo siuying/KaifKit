@@ -17,7 +17,7 @@ KaifKit is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "KaifKit"
+pod "KaifKit", git: "https://github.com/siuying/KaifKit.git"
 ```
 
 ## Author
