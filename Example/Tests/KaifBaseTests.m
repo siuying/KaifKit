@@ -21,7 +21,7 @@
   NSAssert(![@"" isEqual:kaifToken], @"KAIF_TOKEN env not set");
   
   AFOAuthCredential* credential = [[AFOAuthCredential alloc] initWithOAuthToken:kaifToken tokenType:@"Bearer"];
-  self.client = [[KaifClient alloc] initWithClientID:kaifClientId secret:kaifSecret credential:credential];
+  self.client = [[KaifClient alloc] initWithClientID:kaifClientId secret:kaifSecret redirectURL:[NSURL URLWithString:@"kaifkit://"]];
 }
 
 @end

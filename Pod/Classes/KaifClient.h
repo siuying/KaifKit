@@ -8,13 +8,24 @@
 
 #import <AFOAuth2Manager/AFOAuth2Manager.h>
 
+@class KaifAuthenticator;
+
 extern id KCNullSafeObject(id object);
 
 extern NSString* const KaifClientErrorDomain;
 
 @interface KaifClient : AFOAuth2Manager
 
-- (instancetype)initWithClientID:(NSString*)clientID secret:(NSString*)secret credential:(AFOAuthCredential*)credential;
+@property (nonatomic, readonly) KaifAuthenticator* authenticator;
+
+- (instancetype)initWithClientID:(NSString*)clientID
+                          secret:(NSString*)secret
+                     redirectURL:(NSURL*)redirectURL;
+
+- (instancetype)initWithClientID:(NSString*)clientID
+                          secret:(NSString*)secret
+                     redirectURL:(NSURL*)redirectURL
+                      credential:(AFOAuthCredential*)credential;
 
 - (BOOL)authenticated;
 

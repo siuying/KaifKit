@@ -13,9 +13,9 @@
 NSString* const KaifSessionAuthenticationChangedNotification = @"KaifSessionAuthenticationChangedNotification";
 NSString* const KaifSessionAuthenticationFailureNotification = @"KaifSessionAuthenticationFailureNotification";
 
-static NSString* const ServiceName = @"Kaif.io";
-static NSString* const ServiceAccount = @"Bearer";
-static NSString* const AccessGroup = @"hk.ignition.KaifApp";
+static NSString* const ServiceName      = @"Kaif.io";
+static NSString* const ServiceAccount   = @"Bearer";
+static NSString* _sharedAccessGroup     = nil;
 
 @implementation KaifSession
 
@@ -25,7 +25,7 @@ static NSString* const AccessGroup = @"hk.ignition.KaifApp";
     SSKeychainQuery *query = [[SSKeychainQuery alloc] init];
     query.service = ServiceName;
     query.account = ServiceAccount;
-    query.accessGroup = AccessGroup;
+    query.accessGroup = [self accessGroup];
     query.password = accessToken;
     BOOL succeed = [query save:error];
     if (succeed) {
@@ -44,7 +44,7 @@ static NSString* const AccessGroup = @"hk.ignition.KaifApp";
     SSKeychainQuery *query = [[SSKeychainQuery alloc] init];
     query.service = ServiceName;
     query.account = ServiceAccount;
-    query.accessGroup = AccessGroup;
+    query.accessGroup = [self accessGroup];
     return [query fetch:nil];
 }
 
@@ -53,7 +53,7 @@ static NSString* const AccessGroup = @"hk.ignition.KaifApp";
     SSKeychainQuery *query = [[SSKeychainQuery alloc] init];
     query.service = ServiceName;
     query.account = ServiceAccount;
-    query.accessGroup = AccessGroup;
+    query.accessGroup = [self accessGroup];
     NSError* error;
     if(![query fetch:&error]) {
         NSLog(@"error auth: %@", error);
@@ -67,9 +67,20 @@ static NSString* const AccessGroup = @"hk.ignition.KaifApp";
     SSKeychainQuery *query = [[SSKeychainQuery alloc] init];
     query.service = ServiceName;
     query.account = ServiceAccount;
-    query.accessGroup = AccessGroup;
+    query.accessGroup = [self accessGroup];
     [query deleteItem:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:KaifSessionAuthenticationChangedNotification object:nil];
+}
+
++(void) setAccessGroup:(NSString*)accessGroup
+{
+    _sharedAccessGroup = accessGroup;
+}
+
+
++(NSString*) accessGroup
+{
+    return _sharedAccessGroup;
 }
 
 @end

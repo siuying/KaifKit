@@ -7,13 +7,31 @@
 //
 
 #import "IGAppDelegate.h"
+#import "IGViewController.h"
 #import <KaifKit/KaifKit.h>
+
+@interface IGAppDelegate()
+@property (nonatomic, strong) KaifClient* client;
+@end
 
 @implementation IGAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    // environment variable have to be set
+    NSString* kaifClientId = [[NSProcessInfo processInfo] environment][@"KAIF_CLIENT_ID"];
+    NSString* kaifSecret = [[NSProcessInfo processInfo] environment][@"KAIF_SECRET"];
+    NSAssert(![kaifClientId isEqualToString:@""], @"KAIF_CLIENT_ID is not set!");
+    NSAssert(![kaifSecret isEqualToString:@""], @"KAIF_SECRET is not set!");
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [[IGViewController alloc] initWithNibName:nil bundle:nil];
+    [self.window makeKeyAndVisible];
+
+    self.client = [[KaifClient alloc] initWithClientID:kaifClientId secret:kaifSecret redirectURL:[NSURL URLWithString:@"kafkit://callback"]];
+    if (![self.client authenticated]) {
+        [self.client authenticateWithViewController:self.window.rootViewController];
+    }
     return YES;
 }
 							

@@ -16,10 +16,9 @@ id KCNullSafeObject(id object){
     return object ?: [NSNull null];
 }
 
-static NSString* const KaifClientBaseURLString = @"https://kaif.io";
-static NSString* const AuthorizationURLString = @"https://kaif.io/oauth/authorize";
-static NSString* const TokenURLString = @"https://kaif.io/oauth/access-token";
-static NSString* const RedirectURLString = @"icaif://callback";
+static NSString* const KaifClientBaseURLString  = @"https://kaif.io";
+static NSString* const AuthorizationURLString   = @"https://kaif.io/oauth/authorize";
+static NSString* const TokenURLString           = @"https://kaif.io/oauth/access-token";
 
 NSString* const KaifClientErrorDomain = @"KaifClientErrorDomain";
 
@@ -29,14 +28,24 @@ NSString* const KaifClientErrorDomain = @"KaifClientErrorDomain";
 
 @implementation KaifClient
 
-- (instancetype)initWithClientID:(NSString*)clientID secret:(NSString*)secret credential:(AFOAuthCredential*)credential
+- (instancetype)initWithClientID:(NSString*)clientID
+                          secret:(NSString*)secret
+                     redirectURL:(NSURL*)redirectURL
+{
+    return [self initWithClientID:clientID secret:secret redirectURL:redirectURL credential:[KaifSession credential]];
+}
+
+- (instancetype)initWithClientID:(NSString*)clientID
+                          secret:(NSString*)secret
+                     redirectURL:(NSURL*)redirectURL
+                      credential:(AFOAuthCredential*)credential
 {
     self = [super initWithBaseURL:[NSURL URLWithString:KaifClientBaseURLString] clientID:clientID secret:secret];
     self.authenticator = [[KaifAuthenticator alloc] initWithClientID:clientID
                                                                    secret:secret
                                                          authorizationURL:[NSURL URLWithString:AuthorizationURLString]
                                                                  tokenURL:[NSURL URLWithString:TokenURLString]
-                                                              redirectURL:[NSURL URLWithString:RedirectURLString]];
+                                                              redirectURL:redirectURL];
     self.responseSerializer = [AFJSONResponseSerializer serializer];
     self.requestSerializer = [AFJSONRequestSerializer serializer];
     [self.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
