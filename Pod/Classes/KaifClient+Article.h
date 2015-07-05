@@ -8,6 +8,11 @@
 
 #import "KaifClient.h"
 
+typedef NS_ENUM(NSUInteger, KaifClientArticleType) {
+    KaifClientArticleTypeHot,
+    KaifClientArticleTypeLatest
+};
+
 @interface KaifClient (Article)
 
 #pragma mark - Articles
@@ -21,6 +26,11 @@
                    content:(NSString*)content
                       zone:(NSString*)zone
                   callback:(void(^)(NSDictionary* article, NSError* error))callback;
+
+- (void) getArticlesWithType:(KaifClientArticleType)type
+                        zone:(NSString*)zone
+              startArticleId:(NSString*)startArticleId
+                    callback:(void(^)(NSArray* articles, NSError* error))callback;
 
 - (void) getHotArticlesWithStartArticleId:(NSString*)startArticleId
                                  callback:(void(^)(NSArray* articles, NSError* error))callback;

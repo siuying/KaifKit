@@ -55,16 +55,16 @@
       }];
 }
 
-- (void) getHotArticlesWithStartArticleId:(NSString*)startArticleId
-                                 callback:(void(^)(NSArray* articles, NSError* error))callback
+- (void) getArticlesWithType:(KaifClientArticleType)type zone:(NSString*)zone startArticleId:(NSString*)startArticleId callback:(void(^)(NSArray* articles, NSError* error))callback
 {
+    NSString* path = [self getArticlePathWithType:type zone:zone];
+
     NSDictionary* params;
-    
     if (startArticleId) {
         params = @{@"start-article-id": startArticleId};
     }
-    
-    [self GET:@"/v1/article/hot"
+
+    [self GET:path
    parameters:params
       success:^(AFHTTPRequestOperation *operation, NSDictionary* response) {
           NSArray* errors = response[@"errors"];
@@ -77,90 +77,50 @@
       }
       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
           callback(nil, error);
-          
-          if ([[error domain] isEqualToString:AFURLResponseSerializationErrorDomain]) {
-              NSHTTPURLResponse* response = error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
-              if (response.statusCode == 401) {
-                  // auth error
-                  //[KaifSession logout];
-              }
-          }
       }];
+}
+
+- (void) getHotArticlesWithStartArticleId:(NSString*)startArticleId
+                                 callback:(void(^)(NSArray* articles, NSError* error))callback
+{
+    [self getArticlesWithType:KaifClientArticleTypeHot zone:nil startArticleId:startArticleId callback:callback];
 }
 
 - (void) getLatestArticlesWithStartArticleId:(NSString*)startArticleId
                                     callback:(void(^)(NSArray* articles, NSError* error))callback
 {
-    [self GET:@"/v1/article/latest"
-   parameters:nil
-      success:^(AFHTTPRequestOperation *operation, NSDictionary* response) {
-          NSArray* errors = response[@"errors"];
-          if ([errors count] > 0) {
-              callback(nil, [NSError errorWithDomain:KaifClientErrorDomain code:1 userInfo:@{NSLocalizedDescriptionKey: [errors description]}]);
-              return;
-          }
-          
-          callback(response[@"data"], nil);
-      }
-      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-          callback(nil, error);
-      }];
+    [self getArticlesWithType:KaifClientArticleTypeLatest zone:nil startArticleId:startArticleId callback:callback];
 }
 
 - (void) getHotArticlesWithZone:(NSString*)zone
                  startArticleId:(NSString*)startArticleId
                        callback:(void(^)(NSArray* articles, NSError* error))callback
 {
-    NSParameterAssert(zone);
-
-    NSDictionary* params;
-    
-    if (startArticleId) {
-        params = @{@"start-article-id": startArticleId};
-    }
-    
-    [self GET:[NSString stringWithFormat:@"/v1/article/zone/%@/hot", zone]
-   parameters:params
-      success:^(AFHTTPRequestOperation *operation, NSDictionary* response) {
-          NSArray* errors = response[@"errors"];
-          if ([errors count] > 0) {
-              callback(nil, [NSError errorWithDomain:KaifClientErrorDomain code:1 userInfo:@{NSLocalizedDescriptionKey: [errors description]}]);
-              return;
-          }
-          
-          callback(response[@"data"], nil);
-      }
-      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-          callback(nil, error);
-      }];
+    [self getArticlesWithType:KaifClientArticleTypeHot zone:zone startArticleId:startArticleId callback:callback];
 }
 
 - (void) getLatestArticlesWithZone:(NSString*)zone
                     startArticleId:(NSString*)startArticleId
                           callback:(void(^)(NSArray* articles, NSError* error))callback
 {
-    NSParameterAssert(zone);
+    [self getArticlesWithType:KaifClientArticleTypeLatest zone:zone startArticleId:startArticleId callback:callback];
+}
 
-    NSDictionary* params;
-    
-    if (startArticleId) {
-        params = @{@"start-article-id": startArticleId};
+#pragma mark - 
+
+-(NSString*) getArticlePathWithType:(KaifClientArticleType)type zone:(NSString*)zone
+{
+    NSMutableString* url = [[NSMutableString alloc] init];
+    [url appendString:@"/v1/article"];
+    if (zone) {
+        [url appendFormat:@"/zone/%@", zone];
     }
-
-    [self GET:[NSString stringWithFormat:@"/v1/article/zone/%@/latest", zone]
-   parameters:params
-      success:^(AFHTTPRequestOperation *operation, NSDictionary* response) {
-          NSArray* errors = response[@"errors"];
-          if ([errors count] > 0) {
-              callback(nil, [NSError errorWithDomain:KaifClientErrorDomain code:1 userInfo:@{NSLocalizedDescriptionKey: [errors description]}]);
-              return;
-          }
-          
-          callback(response[@"data"], nil);
-      }
-      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-          callback(nil, error);
-      }];
+    if (type == KaifClientArticleTypeHot) {
+        [url appendString:@"/hot"];
+    } else {
+        [url appendString:@"/latest"];
+    }
+    return [url copy];
 }
 
 @end
