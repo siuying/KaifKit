@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.dependency 'AFNetworking', '~> 2.4'
+  s.dependency 'AFNetworking', '~> 2.5.4'
   s.dependency 'AFOAuth2Manager'
   s.dependency 'SSKeychain'
 end
