@@ -4,3 +4,4 @@
 #import "KaifClient+Zone.h"
 #import "KaifClient+Debate.h"
 #import "KaifAuthenticator.h"
+#import "KaifSession.h"
